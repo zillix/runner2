@@ -22,7 +22,7 @@ public class LevelController {
 	Level level;
 	PlayerController playerController;
 	RadialObjectListController platformController;
-	RadialObjectListController iceBallController;
+	RadialObjectListController collectableController;
 	RadialObjectSpawner<Platform> platformSpawner;
 	RadialObjectSpawner<IceBallCollectable> iceBallSpawner;
 	Player player;
@@ -33,9 +33,9 @@ public class LevelController {
 		player = pLevel.getPlayer();
 		playerController = new PlayerController(level.getPlayer(), level);
 		platformController = new RadialObjectListController(level.getPlatforms(), level.getPlanet());
-		iceBallController = new CollectableListController(level.getIceBalls(), level.getPlanet(), player);
+		collectableController = new CollectableListController(level.getCollectables(), level.getPlanet(), player);
 		platformSpawner = new RadialObjectSpawner<Platform>(Platform.class, level.getPlatforms(), player, level.getPlanet(), INITIAL_PLATFORM_QUANTITY, PLATFORM_MIN_SPAWN_DISTANCE, PLATFORM_MAX_SPAWN_DISTANCE, DISTANCE_PER_PLATFORM);
-		iceBallSpawner = new RadialObjectSpawner<IceBallCollectable>(IceBallCollectable.class, level.getIceBalls(), player, level.getPlanet(), INITIAL_ICEBALL_QUANTITY, ICEBALL_MIN_SPAWN_DISTANCE, ICEBALL_MAX_SPAWN_DISTANCE, DISTANCE_PER_ICEBALL);
+		iceBallSpawner = new RadialObjectSpawner<IceBallCollectable>(IceBallCollectable.class, level.getCollectables(), player, level.getPlanet(), INITIAL_ICEBALL_QUANTITY, ICEBALL_MIN_SPAWN_DISTANCE, ICEBALL_MAX_SPAWN_DISTANCE, DISTANCE_PER_ICEBALL);
 	}
 
 	public void update(float delta)
@@ -44,7 +44,7 @@ public class LevelController {
 		playerController.update(delta);
 		level.getPlanet().update(delta);
 		platformController.update(delta);
-		iceBallController.update(delta);
+		collectableController.update(delta);
 		
 		if (player.getOriginDistance() > level.getPlayerStats().furthestDistance)
 		{
@@ -52,9 +52,6 @@ public class LevelController {
 			platformSpawner.addDebt(debt);
 			iceBallSpawner.addDebt(debt);
 		}
-		
-		platformSpawner.update(delta);
-		iceBallSpawner.update(delta);
 		
 		level.getPlayerStats().update(delta);
 	}

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.zillix.game.Level;
 import com.zillix.game.objects.Platform;
+import com.zillix.game.objects.collectables.Collectable;
 import com.zillix.game.objects.collectables.IceBallCollectable;
 
 public class LevelRenderer implements IRenderer {
@@ -29,7 +30,7 @@ public class LevelRenderer implements IRenderer {
 		
 		batch.begin();
 			drawPlatforms(batch);
-			drawIceBalls(batch);
+			drawCollectables(batch);
 			drawPlanet(batch);
 			drawPlayer(batch);
 		batch.end();
@@ -59,9 +60,9 @@ public class LevelRenderer implements IRenderer {
 		}
 	}
 	
-	private void drawIceBalls(SpriteBatch batch)
+	private void drawCollectables(SpriteBatch batch)
 	{
-		for (IceBallCollectable p : level.getIceBalls())
+		for (Collectable p : level.getCollectables())
 		{
 			p.draw(batch);
 		}

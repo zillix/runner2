@@ -18,18 +18,18 @@ public class RadialObjectSpawner<T extends RadialObject> {
 	public static final double DEFAULT_MAX_SPAWN_DISTANCE = 200;
 	public static final double DEFAULT_DEBT_PER_OBJECT = 20;
 	
-	ArrayList<T> members;
+	ArrayList<? super T> outputList;
 	
-	public RadialObjectSpawner(Class<T> classType, ArrayList<T> members, RadialObject reference, RadialOriginObject origin, int initialQuantity)
+	public RadialObjectSpawner(Class<T> classType, ArrayList<? super T> outputList, RadialObject reference, RadialOriginObject origin, int initialQuantity)
 	{
-		this(classType, members, reference, origin, initialQuantity, DEFAULT_MIN_SPAWN_DISTANCE, DEFAULT_MAX_SPAWN_DISTANCE, DEFAULT_DEBT_PER_OBJECT);
+		this(classType, outputList, reference, origin, initialQuantity, DEFAULT_MIN_SPAWN_DISTANCE, DEFAULT_MAX_SPAWN_DISTANCE, DEFAULT_DEBT_PER_OBJECT);
 	}
 	
-	public RadialObjectSpawner(Class<T> classType, ArrayList<T> members, RadialObject reference, RadialOriginObject origin, int initialQuantity, double minSpawnDistance, double maxSpawnDistance, double debtPerObject)
+	public RadialObjectSpawner(Class<T> classType, ArrayList<? super T> outputList, RadialObject reference, RadialOriginObject origin, int initialQuantity, double minSpawnDistance, double maxSpawnDistance, double debtPerObject)
 	{
 		this.ClassType = classType;
 		this.origin = origin;
-		this.members = members;
+		this.outputList = outputList;
 		this.reference = reference;
 		this.debtPerObject = debtPerObject;
 		this.minSpawnDistance = minSpawnDistance;
@@ -42,7 +42,7 @@ public class RadialObjectSpawner<T extends RadialObject> {
 		for (int i = 0; i < initialQuantity; i++)
 		{
 			try {
-				members.add(generateObject(minSpawnDistance 
+				outputList.add(generateObject(minSpawnDistance 
 						+ (maxSpawnDistance - minSpawnDistance) * Math.random()
 						+ origin.radius));
 			} catch (InstantiationException e) {
@@ -76,7 +76,7 @@ public class RadialObjectSpawner<T extends RadialObject> {
 						+ minSpawnDistance 
 						+ (maxSpawnDistance - minSpawnDistance) * Math.random())));
 				fitObject(object);
-				members.add(object);
+				outputList.add(object);
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -94,16 +94,8 @@ public class RadialObjectSpawner<T extends RadialObject> {
 		// TODO make sure object doesn't overlap with other objects
 	}
 	
-	public ArrayList<T> getMembers()
+	public ArrayList<? super T> outputList()
 	{
-		return members;
-	}
-	
-	public void update(float delta)
-	{
-		for (T obj : members)
-		{
-			obj.update(delta);
-		}
+		return outputList;
 	}
 }

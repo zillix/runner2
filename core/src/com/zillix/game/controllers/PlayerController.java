@@ -102,6 +102,7 @@ public class PlayerController extends RadialObjectController {
 		{
 			player.consumeCollectable(CollectableType.ICEBALL, 1);
 			player.getVelocity().y = Math.min(-player.getIceBallVelocity(), player.getVelocity().y - player.getIceBallVelocity());
+			
 		}
 	}
 	
