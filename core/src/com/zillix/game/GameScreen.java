@@ -3,20 +3,29 @@ package com.zillix.game;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.input.GestureDetector.GestureAdapter;
+import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.zillix.game.controllers.LevelController;
+import com.zillix.game.input.RunnerGestureAdapter;
+import com.zillix.game.input.RunnerInput;
+import com.zillix.game.input.SimpleRunnerGestureDetector;
+import com.zillix.game.input.SimpleRunnerGestureAdapter;
 import com.zillix.game.renderers.HudRenderer;
 import com.zillix.game.renderers.IRenderer;
 import com.zillix.game.renderers.LevelRenderer;
 import com.zillix.game.renderers.ScreenRenderer;
 
-public class GameScreen extends InputAdapter implements Screen {
+public class GameScreen implements Screen {
 
 	private LevelController controller;
 	private Level level;
+	
+	private RunnerInput input;
+	private RunnerGestureAdapter runnerGesture;
+	private GestureDetector gestureDetector;
 	
 	private ScreenRenderer renderer;
 	
@@ -30,7 +39,13 @@ public class GameScreen extends InputAdapter implements Screen {
 		renderers.add(new HudRenderer(level));
 		renderer = new ScreenRenderer(renderers);
 		controller = new LevelController(level);
-		Gdx.input.setInputProcessor(this);
+		
+		runnerGesture = new SimpleRunnerGestureAdapter(controller);
+		gestureDetector = new SimpleRunnerGestureDetector(controller, runnerGesture);
+		
+		input = new RunnerInput(controller, gestureDetector);
+		Gdx.input.setInputProcessor(input);
+		
 	}
 	
 	@Override
@@ -42,60 +57,6 @@ public class GameScreen extends InputAdapter implements Screen {
 		renderer.render(delta);
 	}
 	
-	@Override
-	public boolean keyDown(int keycode) {
-		if (keycode == Keys.LEFT)
-			controller.leftPressed(0);
-		if (keycode == Keys.RIGHT)
-			controller.rightPressed(0);
-		if (keycode == Keys.SPACE)
-			controller.jumpPressed(0);
-		if (keycode == Keys.X)
-			controller.firePressed(0);
-		return true;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		if (keycode == Keys.LEFT)
-			controller.leftReleased(0);
-		if (keycode == Keys.RIGHT)
-			controller.rightReleased(0);
-		if (keycode == Keys.SPACE)
-			controller.jumpReleased(0);
-		if (keycode == Keys.X)
-			controller.fireReleased(0);
-		return true;
-	}
-	
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button)
-	{
-		if (screenX > Gdx.graphics.getWidth() / 2)
-		{
-			controller.rightPressed(pointer);
-		}
-		if (screenX < Gdx.graphics.getWidth() / 2)
-		{
-			controller.leftPressed(pointer);
-		}
-		return true;
-	}
-	
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button)
-	{
-		if (screenX > Gdx.graphics.getWidth() / 2)
-		{
-			controller.rightReleased(pointer);
-		}
-		if (screenX < Gdx.graphics.getWidth() / 2)
-		{
-			controller.leftReleased(pointer);
-		}
-		return true;
-	}
-
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
@@ -125,4 +86,5 @@ public class GameScreen extends InputAdapter implements Screen {
 		Gdx.input.setInputProcessor(null);
 		renderer.dispose();
 	}
+	
 }
