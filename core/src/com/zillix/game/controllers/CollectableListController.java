@@ -2,6 +2,7 @@ package com.zillix.game.controllers;
 
 import java.util.ArrayList;
 
+import com.zillix.game.factories.RadialObjectControllerFactory;
 import com.zillix.game.objects.Planet;
 import com.zillix.game.objects.RadialObject;
 import com.zillix.game.objects.collectables.Collectable;
@@ -12,9 +13,9 @@ public class CollectableListController extends
 	
 	private ICollector collector;
 	
-	public CollectableListController(ArrayList<? extends RadialObject> list, Planet planet, ICollector collector)
+	public CollectableListController(ArrayList<? extends RadialObject> list, RadialObjectControllerFactory factory, Planet planet, ICollector collector)
 	{
-		super(list, planet);
+		super(list, factory, planet);
 		this.collector = collector;
 	}
 	

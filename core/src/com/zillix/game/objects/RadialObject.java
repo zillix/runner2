@@ -36,7 +36,7 @@ public class RadialObject {
 		setup(pOrigin);
 	}
 	
-	public RadialObject()
+	protected RadialObject()
 	{
 		acceleration = new Vector2();
 		velocity = new Vector2();
@@ -52,12 +52,13 @@ public class RadialObject {
 		sprite.setOriginCenter();
 		setBounds(-sprite.getWidth() / 2, -sprite.getHeight() / 2, sprite.getWidth(), sprite.getHeight());
 		
+		maxVelocity.set(60 * 20, 50 * 30);
 		
 		centerSprite = new Sprite(new Texture(CENTER_SPRITE_PATH));
 		centerSprite.setOriginCenter();
 	}
 	
-	public void update(float delta)
+	public void debugUpdate(float delta)
 	{
 	}
 	
@@ -207,6 +208,14 @@ public class RadialObject {
 
 	public void setIsDead(Boolean isDead) {
 		this.isDead = isDead;
+	}
+
+	public RadialPosition getPosition() {
+		return position;
+	}
+
+	public void setPosition(RadialPosition position) {
+		this.position = position.copy();
 	}
 	
 	

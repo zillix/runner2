@@ -43,4 +43,9 @@ public class RadialPosition {
 	public void setOriginDistance(float originDistance) {
 		this.originDistance = originDistance;
 	}
+	
+	public RadialPosition copy()
+	{
+		return new RadialPosition(origin, originDistance, originAngle);
+	}
 }

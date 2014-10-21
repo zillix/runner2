@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.zillix.game.Level;
+import com.zillix.game.objects.IceBall;
 import com.zillix.game.objects.Player;
 import com.zillix.game.objects.collectables.Collectable.CollectableType;
 
@@ -32,6 +33,9 @@ public class PlayerController extends RadialObjectController {
 	{
 		super(player, pLevel);
 		this.player = player;
+		this.usesSurfaceCollision = true;
+		this.usesPlatformCollision = true;
+		this.allowMovement = true;
 	}
 	
 	@Override
@@ -102,7 +106,10 @@ public class PlayerController extends RadialObjectController {
 		{
 			player.consumeCollectable(CollectableType.ICEBALL, 1);
 			player.getVelocity().y = Math.min(-player.getIceBallVelocity(), player.getVelocity().y - player.getIceBallVelocity());
-			
+			IceBall droppedIce = new IceBall(level.getPlanet());
+			droppedIce.setPosition(player.getPosition());
+			//droppedIce.setVelocity(new Vector2(droppedIce.getVelocity().x, player.getIceBallVelocity()));
+			level.getGameObjects().add(droppedIce);
 		}
 	}
 	

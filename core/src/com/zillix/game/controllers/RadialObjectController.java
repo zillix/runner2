@@ -15,8 +15,9 @@ public class RadialObjectController
 	
 	private static final int DEFAULT_CLOSE_DISTANCE = 200;
 	
-	boolean usesSurfaceCollision = true;
-	boolean usesPlatformCollision = true;
+	boolean usesSurfaceCollision = false;
+	boolean usesPlatformCollision = false;
+	boolean allowMovement = true;
 	
 	public RadialObjectController(RadialObject pObject, Level pLevel)
 	{
@@ -28,21 +29,24 @@ public class RadialObjectController
 	
 	public void update(float deltaTime)
 	{
-		stepAcceleration(deltaTime);
-		
-		capVelocity();
-		
-		if (usesSurfaceCollision)
+		if (allowMovement)
 		{
-			collideSurface(deltaTime);
-		}
-		
-		if (usesPlatformCollision)
-		{
-			collidePlatforms(deltaTime);
-		}
-		
-		stepMovement(deltaTime);	
+			stepAcceleration(deltaTime);
+			
+			capVelocity();
+			
+			if (usesSurfaceCollision)
+			{
+				collideSurface(deltaTime);
+			}
+			
+			if (usesPlatformCollision)
+			{
+				collidePlatforms(deltaTime);
+			}
+			
+			stepMovement(deltaTime);	
+		}	
 	}
 	
 	protected void capVelocity()
