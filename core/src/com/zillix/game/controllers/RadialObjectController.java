@@ -100,8 +100,6 @@ public class RadialObjectController
 		double rotateAngle = -360 * object.getVelocity().x * deltaTime / (object.getOriginDistance() * 2 * Math.PI);
 		object.setOriginDistance(object.getOriginDistance()
 				- (object.getVelocity().y * deltaTime));
-		//object.setOriginDistance((float) Math.max(level.getPlanet().getMinRadius(), object.getOriginDistance()
-		//		+ (-rotateAngle * level.getPlanet().getIncreaseRate())));
 		
 		object.setOriginAngle((float)PolarUtil.standardizeAngle(object.getOriginAngle() + rotateAngle));
 		level.getPlanet().rotate((float)-rotateAngle);

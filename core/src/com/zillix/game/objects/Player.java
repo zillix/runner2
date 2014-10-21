@@ -38,6 +38,7 @@ public class Player extends RadialObject implements ICollector {
 		_collection = new Collection();
 		
 		// Temp code for configuring movement
+		maxVelocity.set(10 * 30, 50 * 30);
 		acceleration.set(0f, 1.5f * 50 * 30); // should use planet.gravity
 		deceleration.set(1.3f * 30 * 30, 0f);
 		runAcceleration = 2 * 30 * 30;

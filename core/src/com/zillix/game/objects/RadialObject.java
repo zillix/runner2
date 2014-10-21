@@ -52,7 +52,7 @@ public class RadialObject {
 		sprite.setOriginCenter();
 		setBounds(-sprite.getWidth() / 2, -sprite.getHeight() / 2, sprite.getWidth(), sprite.getHeight());
 		
-		maxVelocity.set(60 * 20, 50 * 30);
+		maxVelocity.set(100 * 30, 100 * 30);
 		
 		centerSprite = new Sprite(new Texture(CENTER_SPRITE_PATH));
 		centerSprite.setOriginCenter();
