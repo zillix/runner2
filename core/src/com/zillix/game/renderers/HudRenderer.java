@@ -25,7 +25,8 @@ public class HudRenderer implements IRenderer {
 	public void render(SpriteBatch batch, OrthographicCamera camera, float delta)
 	{
 		batch.begin();
-			font.drawMultiLine(batch,  "Ice Balls: " + Integer.toString(player.getIceBallCount()), 10, Gdx.graphics.getHeight() - 10);
+			font.drawMultiLine(batch,  "Ice Balls: " + Integer.toString(player.getIceBallCount()), Gdx.graphics.getWidth() / 2 - 20, Gdx.graphics.getHeight() / 2 - 10);
+			font.drawMultiLine(batch,  "FPS: " + 1 / Gdx.graphics.getRawDeltaTime(), Gdx.graphics.getWidth() / 2 - 20, Gdx.graphics.getHeight() / 2 + 10);
 		batch.end();
 	}
 	

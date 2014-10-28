@@ -62,24 +62,7 @@ public class PlayerController extends RadialObjectController {
 	{
 		if (keys.get(Keys.JUMP))
 		{
-			if (!jumpingPressed && player.getState() == Player.State.JUMPING)
-			{
-				jumpingPressed = true;
-				jumpPressedTime = System.currentTimeMillis();
-				player.setState(Player.State.DOUBLE_JUMPING);
-				player.getVelocity().y =  -player.getJumpVelocity() * getJumpVelocityMultiplier(player.getState());
-			}
-			if (!Player.isJumpingState(player.getState()))
-			{
-				jumpingPressed = true;
-				jumpPressedTime = System.currentTimeMillis();
-				player.setState(Player.State.JUMPING);
-				player.getVelocity().y =  -player.getJumpVelocity() * getJumpVelocityMultiplier(player.getState());
-			}
-			else if (jumpingPressed && (System.currentTimeMillis() - jumpPressedTime) < LONG_JUMP_PRESS)
-			{
-				player.getVelocity().y =  -player.getJumpVelocity() * getJumpVelocityMultiplier(player.getState());
-			}
+			jump(1.0f, true);
 		}
 		else
 		{
@@ -100,6 +83,40 @@ public class PlayerController extends RadialObjectController {
 		}
 	}
 	
+	private void jump(float multiplier, boolean allowHeldJumps)
+	{
+		boolean allowJump = false;
+		boolean startedJump = false;
+		if (!jumpingPressed && player.getState() == Player.State.JUMPING)
+		{
+			player.setState(Player.State.DOUBLE_JUMPING);
+			allowJump = true;
+			startedJump = true;
+		}
+		
+		if (!Player.isJumpingState(player.getState()))
+		{
+			player.setState(Player.State.JUMPING);
+			allowJump = true;
+			startedJump = true;
+		}
+		else if (System.currentTimeMillis() - jumpPressedTime < LONG_JUMP_PRESS)
+		{
+			allowJump = true;
+		}
+		
+		if (startedJump)
+		{
+			jumpingPressed = true;
+			jumpPressedTime = System.currentTimeMillis();
+		}
+		
+		if (allowJump)
+		{
+			player.getVelocity().y =  -player.getJumpVelocity() * getJumpVelocityMultiplier(player.getState());
+		}
+ 	}
+	
 	private void fireIceBall()
 	{
 		if (player.getCollectableCount(CollectableType.ICEBALL) > 0)
@@ -108,9 +125,19 @@ public class PlayerController extends RadialObjectController {
 			player.getVelocity().y = Math.min(-player.getIceBallVelocity(), player.getVelocity().y - player.getIceBallVelocity());
 			IceBall droppedIce = new IceBall(level.getPlanet());
 			droppedIce.setPosition(player.getPosition());
-			//droppedIce.setVelocity(new Vector2(droppedIce.getVelocity().x, player.getIceBallVelocity()));
 			level.getGameObjects().add(droppedIce);
 		}
+	}
+	
+	public void swipeUp(float velocityY)
+	{
+		System.out.println("Swipe up: " + velocityY);
+		jump(1.0f, false);
+	}
+	
+	public void swipeDown(float velocityY)
+	{
+		fireIceBall();
 	}
 	
 	public void leftPressed(int pointer) {

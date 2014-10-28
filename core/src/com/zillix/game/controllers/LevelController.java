@@ -94,4 +94,12 @@ public class LevelController {
 	public void fireReleased(int pointer) {
 		playerController.fireReleased(pointer);
 	}
+	
+	public void swipeUp(float velocity) {
+		playerController.swipeUp(velocity);
+	}
+	
+	public void swipeDown(float velocity) {
+		playerController.swipeDown(velocity);
+	}
 }

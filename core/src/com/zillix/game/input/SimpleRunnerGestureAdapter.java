@@ -17,9 +17,9 @@ public class SimpleRunnerGestureAdapter extends RunnerGestureAdapter {
 				}
 			}else{
 				if(velocityY>0){
-						controller.firePressed(button);
+						controller.swipeDown(button);
 				}else{                                  
-						controller.jumpPressed(button);
+						controller.swipeUp(velocityY);
 				}
 			}
 			return super.fling(velocityX, velocityY, button);
