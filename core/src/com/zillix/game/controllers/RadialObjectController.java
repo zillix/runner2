@@ -107,8 +107,8 @@ public class RadialObjectController
 	
 	protected void collideSurface(float deltaTime)
 	{
-		if (object.getVelocity().y > 0
-				&& object.getBottomDistance() < level.getPlanet().getRadius())
+		if (object.getVelocity().y >= 0
+				&& object.getBottomDistance() <= level.getPlanet().getRadius())
 		{
 			object.setBottomDistance(level.getPlanet().getRadius());
 			onObjectLanded();
