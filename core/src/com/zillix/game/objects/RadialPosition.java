@@ -48,4 +48,12 @@ public class RadialPosition {
 	{
 		return new RadialPosition(origin, originDistance, originAngle);
 	}
+	
+	public void reset()
+	{
+		originDistance = 0;
+		originAngle = 0;
+		origin = null;
+		coords.set(0, 0);
+	}
 }

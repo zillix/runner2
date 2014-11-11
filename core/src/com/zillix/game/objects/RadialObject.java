@@ -53,6 +53,8 @@ public class RadialObject implements Poolable {
 		maxVelocity = new Vector2();
 		defaultVelocity = new Vector2();
 		deceleration = new Vector2();
+		bounds = new Rectangle();
+		sprite = new Sprite();
 
 		reset();
 	}
@@ -61,20 +63,30 @@ public class RadialObject implements Poolable {
 	{
 		acceleration.set(0, 0);
 		velocity.set(0, 0);
-		maxVelocity.set(0, 0);
+		maxVelocity.set(100 * 30, 100 * 30);
 		defaultVelocity.set(0,0);
 		deceleration.set(0, 0);
+		bounds.set(0, 0, 0, 0);
+		
+		if (position != null)
+		{
+			position.reset();
+		}
+		
+		/*if (sprite != null && sprite.getTexture() != null)
+		{
+			sprite.getTexture().dispose();
+		}*/
 		isDead = false;
 	}
 	
 	public void setup(RadialOriginObject pOrigin)
 	{
+		// TODO: Don't allocate these!
 		position = new RadialPosition(pOrigin, 0, 0);
-		sprite = createSprite();
+		sprite = new Sprite(new Texture(getImagePath()));
 		sprite.setOriginCenter();
 		setBounds(-sprite.getWidth() / 2, -sprite.getHeight() / 2, sprite.getWidth(), sprite.getHeight());
-		
-		maxVelocity.set(100 * 30, 100 * 30);
 		
 		centerSprite = new Sprite(new Texture(CENTER_SPRITE_PATH));
 		centerSprite.setOriginCenter();
@@ -86,17 +98,12 @@ public class RadialObject implements Poolable {
 	
 	protected void setBounds(float X, float Y, float W, float H)
 	{
-		bounds = new Rectangle(X, Y, W, H);
+		bounds.set(X,  Y,  W,  H);
 	}
 	
 	protected void setBounds(Rectangle bounds)
 	{
-		this.bounds = new Rectangle(bounds.x, bounds.y, bounds.width, bounds.height);
-	}
-	
-	private Sprite createSprite() 
-	{
-		return new Sprite(new Texture(getImagePath()));
+		this.bounds.set(bounds.x, bounds.y, bounds.width, bounds.height);
 	}
 	
 	protected String getImagePath()
@@ -133,6 +140,8 @@ public class RadialObject implements Poolable {
 	{
 		double rotateAngle = 360 * (velocity.x /*+ acceleration.x * deltaTime*/) * deltaTime / (position.originDistance * 2 * Math.PI);
 		double nextRadius = position.originDistance - (velocity.y /*+ acceleration.y * deltaTime*/) * deltaTime;
+		
+		// TODO: Don't allocate a new radialobject!
 		RadialObject next = new RadialObject(position.origin);
 		next.setOriginAngle((float)(position.originAngle + rotateAngle));
 		next.setOriginDistance((float)nextRadius);
