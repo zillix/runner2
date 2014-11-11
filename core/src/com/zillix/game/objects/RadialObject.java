@@ -38,17 +38,23 @@ public class RadialObject implements Poolable {
 	{
 		this();
 
+		setup(pOrigin);
+	}
+	
+	protected RadialObject()
+	{
+		initialize();
+	}
+	
+	protected void initialize()
+	{
 		acceleration = new Vector2();
 		velocity = new Vector2();
 		maxVelocity = new Vector2();
 		defaultVelocity = new Vector2();
 		deceleration = new Vector2();
-		setup(pOrigin);
+
 		reset();
-	}
-	
-	protected RadialObject()
-	{
 	}
 	
 	public void reset()

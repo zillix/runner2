@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.utils.Pool;
 import com.zillix.game.Level;
 import com.zillix.game.factories.RadialObjectControllerFactory;
+import com.zillix.game.objects.IceBall;
 import com.zillix.game.objects.Platform;
 import com.zillix.game.objects.Player;
 import com.zillix.game.objects.RadialObject;
@@ -41,6 +42,11 @@ public class LevelController {
 		level = pLevel;
 		player = pLevel.getPlayer();
 		poolManager = new RadialObjectPoolManager();
+		
+		// TODO: these may not need to exist as properties
+		poolManager.addPool(platformSpawner, Platform.class);
+		poolManager.addPool(iceBallSpawner, IceBall.class);
+		
 		radialObjectControllerFactory = new RadialObjectControllerFactory(level);
 		radialObjectListControllers = new ArrayList<RadialObjectListController>();
 		
@@ -63,6 +69,11 @@ public class LevelController {
 			double debt = player.getOriginDistance() - level.getPlayerStats().furthestDistance;
 			platformSpawner.addDebt(debt);
 			iceBallSpawner.addDebt(debt);
+		}
+		
+		for (RadialObjectListController controller : radialObjectListControllers)
+		{
+			controller.update(delta);
 		}
 		
 		level.getPlayerStats().update(delta);

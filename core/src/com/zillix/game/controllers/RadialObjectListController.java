@@ -28,6 +28,7 @@ public class RadialObjectListController {
 		this.list = list;
 		this.planet = planet;
 		this.factory = factory;
+		this.poolManager = poolManager;
 		controllers= new HashMap<RadialObject, RadialObjectController>();
 	}
 	
