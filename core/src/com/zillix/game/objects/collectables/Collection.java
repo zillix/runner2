@@ -16,6 +16,11 @@ public class Collection {
 		_collection = new HashMap<Collectable.CollectableType, Integer>();
 	}
 	
+	public void reset()
+	{
+		_collection.clear();
+	}
+	
 	public void addCollectable(Collectable collectable)
 	{
 		addCollectable(collectable.getType(), 1);

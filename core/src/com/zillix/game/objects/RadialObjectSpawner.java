@@ -2,7 +2,9 @@ package com.zillix.game.objects;
 
 import java.util.ArrayList;
 
-public class RadialObjectSpawner<T extends RadialObject> {
+import com.badlogic.gdx.utils.Pool;
+
+public class RadialObjectSpawner<T extends RadialObject> extends RadialObjectPool<T> {
 	
 	Class<T> ClassType;
 	RadialOriginObject origin;
@@ -27,6 +29,7 @@ public class RadialObjectSpawner<T extends RadialObject> {
 	
 	public RadialObjectSpawner(Class<T> classType, ArrayList<? super T> outputList, RadialObject reference, RadialOriginObject origin, int initialQuantity, double minSpawnDistance, double maxSpawnDistance, double debtPerObject)
 	{
+		super(classType);
 		this.ClassType = classType;
 		this.origin = origin;
 		this.outputList = outputList;
@@ -37,27 +40,41 @@ public class RadialObjectSpawner<T extends RadialObject> {
 		spawnInitialMembers(initialQuantity);
 	}
 	
+	 protected T newObject() {
+		 try {
+			 T object = ClassType.newInstance();
+			 object.setPool(this);
+			 return object;
+		 }
+		 catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		 catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 return null;
+	 }
+	
 	private void spawnInitialMembers(int initialQuantity)
 	{
 		for (int i = 0; i < initialQuantity; i++)
 		{
-			try {
-				outputList.add(generateObject(minSpawnDistance 
-						+ (maxSpawnDistance - minSpawnDistance) * Math.random()
-						+ origin.radius));
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			T object = generateObject(minSpawnDistance 
+					+ (maxSpawnDistance - minSpawnDistance) * Math.random()
+					+ origin.radius);
+			
+			if (object != null)
+			{
+				outputList.add(object);
 			}
 		}
 	}
 	
-	protected T generateObject(double originDistance) throws InstantiationException, IllegalAccessException
+	protected T generateObject(double originDistance)
 	{
-		T object = ClassType.newInstance();
+		T object = this.obtain();
 		object.setup(origin);
 		object.setOriginAngle((float)(Math.random() * 360));
 		object.setOriginDistance((float)originDistance);
@@ -70,20 +87,16 @@ public class RadialObjectSpawner<T extends RadialObject> {
 		
 		while (objectSpawnDebt >= 1)
 		{
-			try {
-				T object = generateObject(((float)(
+			T object = generateObject(((float)(
 						reference.getOriginDistance() 
 						+ minSpawnDistance 
 						+ (maxSpawnDistance - minSpawnDistance) * Math.random())));
+			if (object != null)
+			{
 				fitObject(object);
 				outputList.add(object);
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+			
 			
 			objectSpawnDebt -= 1;
 		}

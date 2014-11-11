@@ -9,9 +9,15 @@ public class IceBall extends RadialObject {
 	public IceBall(RadialOriginObject pOrigin)
 	{
 		super(pOrigin);
-		velocity.y = ICE_BALL_VELOCITY_Y;
+		reset();
 	}
 	
+	@Override
+	public void reset()
+	{
+		super.reset();
+		velocity.y = ICE_BALL_VELOCITY_Y;
+	}
 
 	@Override
 	protected String getImagePath()

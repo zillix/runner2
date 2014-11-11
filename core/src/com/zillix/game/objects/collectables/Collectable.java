@@ -16,7 +16,7 @@ public class Collectable extends RadialObject {
 	
 	private static final double DEFAULT_COLLECT_DISTANCE = 30;
 	
-	protected CollectableType type = CollectableType.NONE;
+	protected CollectableType type;
 	
 	protected double collectDistance = DEFAULT_COLLECT_DISTANCE;
 	
@@ -29,6 +29,13 @@ public class Collectable extends RadialObject {
 	public Collectable()
 	{
 		super();
+	}
+	
+	@Override
+	public void reset()
+	{
+		super.reset();
+		type = CollectableType.NONE;
 	}
 	
 	protected double getCollectDistance()

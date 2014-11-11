@@ -3,10 +3,12 @@ package com.zillix.game.controllers;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.badlogic.gdx.utils.Pool;
 import com.zillix.game.factories.RadialObjectControllerFactory;
 import com.zillix.game.objects.Planet;
 import com.zillix.game.objects.Player;
 import com.zillix.game.objects.RadialObject;
+import com.zillix.game.objects.RadialObjectPoolManager;
 
 public class RadialObjectListController {
 	
@@ -19,7 +21,9 @@ public class RadialObjectListController {
 	
 	protected HashMap<RadialObject, RadialObjectController> controllers;
 	
-	public RadialObjectListController(ArrayList<? extends RadialObject> list, RadialObjectControllerFactory factory, Planet planet)
+	protected RadialObjectPoolManager poolManager;
+	
+	public RadialObjectListController(ArrayList<? extends RadialObject> list, RadialObjectControllerFactory factory,  RadialObjectPoolManager poolManager, Planet planet)
 	{
 		this.list = list;
 		this.planet = planet;
@@ -58,6 +62,7 @@ public class RadialObjectListController {
 			RadialObject object = list.get(i);
 			if (object.getIsDead())
 			{
+				poolManager.freeRadialObject(object, object.getClass());
 				list.remove(i);
 				controllers.remove(object);
 			}

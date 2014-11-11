@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.Pool.Poolable;
 import com.zillix.game.controllers.RadialObjectController;
 import com.zillix.util.PolarUtil;
 
-public class RadialObject {
+public class RadialObject implements Poolable {
 
 	protected Sprite sprite;
 	protected Sprite centerSprite;
@@ -25,7 +27,9 @@ public class RadialObject {
 	
 	protected RadialPosition position;
 	
-	protected Boolean isDead = false;
+	protected Boolean isDead;
+	
+	protected Pool<? extends RadialObject> pool;
 	
 	private static final String DEFAULT_SPRITE_PATH = "objects/empty.png";
 	private static final String CENTER_SPRITE_PATH = "objects/dot.png";
@@ -33,16 +37,28 @@ public class RadialObject {
 	public RadialObject(RadialOriginObject pOrigin)
 	{
 		this();
-		setup(pOrigin);
-	}
-	
-	protected RadialObject()
-	{
+
 		acceleration = new Vector2();
 		velocity = new Vector2();
 		maxVelocity = new Vector2();
 		defaultVelocity = new Vector2();
 		deceleration = new Vector2();
+		setup(pOrigin);
+		reset();
+	}
+	
+	protected RadialObject()
+	{
+	}
+	
+	public void reset()
+	{
+		acceleration.set(0, 0);
+		velocity.set(0, 0);
+		maxVelocity.set(0, 0);
+		defaultVelocity.set(0,0);
+		deceleration.set(0, 0);
+		isDead = false;
 	}
 	
 	public void setup(RadialOriginObject pOrigin)
@@ -216,6 +232,14 @@ public class RadialObject {
 
 	public void setPosition(RadialPosition position) {
 		this.position = position.copy();
+	}
+
+	public Pool<? extends RadialObject> getPool() {
+		return pool;
+	}
+
+	public void setPool(Pool<? extends RadialObject> pool) {
+		this.pool = pool;
 	}
 	
 	

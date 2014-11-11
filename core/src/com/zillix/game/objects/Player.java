@@ -18,7 +18,7 @@ public class Player extends RadialObject implements ICollector {
 	
 	private static final String PLAYER_IMAGE_PATH = "objects/coin.png";
 	
-	private Collection _collection;
+	private Collection _collection =  new Collection();
 	
 	public static class State
 	{
@@ -34,8 +34,15 @@ public class Player extends RadialObject implements ICollector {
 		
 		setOriginDistance(pRadius);
 		setOriginAngle(pAngle);
-		
-		_collection = new Collection();
+	}
+	
+	@Override
+	public void reset()
+	{
+		if (_collection != null)
+		{
+			_collection.reset();
+		}
 		
 		// Temp code for configuring movement
 		maxVelocity.set(10 * 30, 50 * 30);

@@ -1,9 +1,14 @@
 package com.zillix.game.controllers;
 
+import java.util.ArrayList;
+
+import com.badlogic.gdx.utils.Pool;
 import com.zillix.game.Level;
 import com.zillix.game.factories.RadialObjectControllerFactory;
 import com.zillix.game.objects.Platform;
 import com.zillix.game.objects.Player;
+import com.zillix.game.objects.RadialObject;
+import com.zillix.game.objects.RadialObjectPoolManager;
 import com.zillix.game.objects.RadialObjectSpawner;
 import com.zillix.game.objects.collectables.IceBallCollectable;
 
@@ -22,9 +27,9 @@ public class LevelController {
 	
 	Level level;
 	PlayerController playerController;
-	RadialObjectListController platformController;
-	RadialObjectListController collectableController;
-	RadialObjectListController gameObjectController;
+	ArrayList<RadialObjectListController> radialObjectListControllers;
+	RadialObjectPoolManager poolManager;
+	
 	RadialObjectSpawner<Platform> platformSpawner;
 	RadialObjectSpawner<IceBallCollectable> iceBallSpawner;
 	Player player;
@@ -35,11 +40,14 @@ public class LevelController {
 	{
 		level = pLevel;
 		player = pLevel.getPlayer();
+		poolManager = new RadialObjectPoolManager();
 		radialObjectControllerFactory = new RadialObjectControllerFactory(level);
+		radialObjectListControllers = new ArrayList<RadialObjectListController>();
+		
 		playerController = new PlayerController(level.getPlayer(), level);
-		platformController = new RadialObjectListController(level.getPlatforms(), radialObjectControllerFactory, level.getPlanet());
-		collectableController = new CollectableListController(level.getCollectables(), radialObjectControllerFactory, level.getPlanet(), player);
-		gameObjectController = new RadialObjectListController(level.getGameObjects(), radialObjectControllerFactory, level.getPlanet());
+		radialObjectListControllers.add(new RadialObjectListController(level.getPlatforms(), radialObjectControllerFactory, poolManager, level.getPlanet()));
+		radialObjectListControllers.add(new CollectableListController(level.getCollectables(), radialObjectControllerFactory, poolManager, level.getPlanet(), player));
+		radialObjectListControllers.add(new RadialObjectListController(level.getGameObjects(), radialObjectControllerFactory, poolManager, level.getPlanet()));
 		
 		platformSpawner = new RadialObjectSpawner<Platform>(Platform.class, level.getPlatforms(), player, level.getPlanet(), INITIAL_PLATFORM_QUANTITY, PLATFORM_MIN_SPAWN_DISTANCE, PLATFORM_MAX_SPAWN_DISTANCE, DISTANCE_PER_PLATFORM);
 		iceBallSpawner = new RadialObjectSpawner<IceBallCollectable>(IceBallCollectable.class, level.getCollectables(), player, level.getPlanet(), INITIAL_ICEBALL_QUANTITY, ICEBALL_MIN_SPAWN_DISTANCE, ICEBALL_MAX_SPAWN_DISTANCE, DISTANCE_PER_ICEBALL);
@@ -49,9 +57,6 @@ public class LevelController {
 	{
 		playerController.update(delta);
 		level.getPlanet().update(delta);
-		platformController.update(delta);
-		collectableController.update(delta);
-		gameObjectController.update(delta);
 		
 		if (player.getOriginDistance() > level.getPlayerStats().furthestDistance)
 		{
@@ -61,6 +66,11 @@ public class LevelController {
 		}
 		
 		level.getPlayerStats().update(delta);
+	}
+	
+	public <T> Pool<? extends RadialObject> getRadialObjectPool(Class<? extends RadialObject> classType)
+	{
+		return poolManager.getPool(classType);
 	}
 	
 	public void leftPressed(int pointer) {
