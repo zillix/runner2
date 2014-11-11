@@ -1,6 +1,7 @@
-package com.zillix.game.objects;
+package com.zillix.game.pools;
 
 import com.badlogic.gdx.utils.Pool;
+import com.zillix.game.objects.RadialObject;
 
 
 public class RadialObjectPool<T extends RadialObject> extends Pool<T> {

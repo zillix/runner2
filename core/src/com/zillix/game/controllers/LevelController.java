@@ -9,9 +9,9 @@ import com.zillix.game.objects.IceBall;
 import com.zillix.game.objects.Platform;
 import com.zillix.game.objects.Player;
 import com.zillix.game.objects.RadialObject;
-import com.zillix.game.objects.RadialObjectPoolManager;
 import com.zillix.game.objects.RadialObjectSpawner;
 import com.zillix.game.objects.collectables.IceBallCollectable;
+import com.zillix.game.pools.RadialObjectPoolManager;
 
 public class LevelController {
 	

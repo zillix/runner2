@@ -1,6 +1,8 @@
-package com.zillix.game.objects;
+package com.zillix.game.pools;
 
 import java.util.HashMap;
+
+import com.zillix.game.objects.RadialObject;
 
 public class RadialObjectPoolManager {
 

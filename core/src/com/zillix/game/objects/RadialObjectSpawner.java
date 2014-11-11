@@ -3,6 +3,7 @@ package com.zillix.game.objects;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.utils.Pool;
+import com.zillix.game.pools.RadialObjectPool;
 
 public class RadialObjectSpawner<T extends RadialObject> extends RadialObjectPool<T> {
 	

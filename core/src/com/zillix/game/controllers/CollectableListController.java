@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import com.zillix.game.factories.RadialObjectControllerFactory;
 import com.zillix.game.objects.Planet;
 import com.zillix.game.objects.RadialObject;
-import com.zillix.game.objects.RadialObjectPoolManager;
 import com.zillix.game.objects.collectables.Collectable;
 import com.zillix.game.objects.collectables.ICollector;
+import com.zillix.game.pools.RadialObjectPoolManager;
 
 public class CollectableListController extends
 		RadialObjectListController {
