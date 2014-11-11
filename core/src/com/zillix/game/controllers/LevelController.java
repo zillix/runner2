@@ -43,10 +43,6 @@ public class LevelController {
 		player = pLevel.getPlayer();
 		poolManager = new RadialObjectPoolManager();
 		
-		// TODO: these may not need to exist as properties
-		poolManager.addPool(platformSpawner, Platform.class);
-		poolManager.addPool(iceBallSpawner, IceBall.class);
-		
 		radialObjectControllerFactory = new RadialObjectControllerFactory(level);
 		radialObjectListControllers = new ArrayList<RadialObjectListController>();
 		
@@ -57,6 +53,12 @@ public class LevelController {
 		
 		platformSpawner = new RadialObjectSpawner<Platform>(Platform.class, level.getPlatforms(), player, level.getPlanet(), INITIAL_PLATFORM_QUANTITY, PLATFORM_MIN_SPAWN_DISTANCE, PLATFORM_MAX_SPAWN_DISTANCE, DISTANCE_PER_PLATFORM);
 		iceBallSpawner = new RadialObjectSpawner<IceBallCollectable>(IceBallCollectable.class, level.getCollectables(), player, level.getPlanet(), INITIAL_ICEBALL_QUANTITY, ICEBALL_MIN_SPAWN_DISTANCE, ICEBALL_MAX_SPAWN_DISTANCE, DISTANCE_PER_ICEBALL);
+	
+		// TODO: these may not need to exist as properties
+		poolManager.addPool(platformSpawner, Platform.class);
+		poolManager.addPool(iceBallSpawner, IceBall.class);
+				
+				
 	}
 
 	public void update(float delta)
