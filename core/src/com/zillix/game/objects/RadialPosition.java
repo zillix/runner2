@@ -11,7 +11,6 @@ public class RadialPosition {
 
 	public RadialPosition(RadialOriginObject pOrigin, float originDistance, float originAngle)
 	{
-		origin = pOrigin;
 		this.originDistance = originDistance;
 		this.originAngle = originAngle;
 		coords = new Vector2();
@@ -25,8 +24,12 @@ public class RadialPosition {
 	
 	public Vector2 getAbsoluteCoordinates()
 	{
-		return getRelativeCoordinates().cpy().add(origin.getPosition());
-	}
+		if (origin != null)
+		{
+			return getRelativeCoordinates().cpy().add(origin.getPosition());
+		}
+		return getRelativeCoordinates().cpy();
+}
 
 	public float getOriginAngle() {
 		return originAngle;
@@ -44,6 +47,7 @@ public class RadialPosition {
 		this.originDistance = originDistance;
 	}
 	
+	// TODO: remove this allocation
 	public RadialPosition copy()
 	{
 		return new RadialPosition(origin, originDistance, originAngle);
@@ -53,7 +57,14 @@ public class RadialPosition {
 	{
 		originDistance = 0;
 		originAngle = 0;
-		origin = null;
 		coords.set(0, 0);
+	}
+
+	public RadialOriginObject getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(RadialOriginObject origin) {
+		this.origin = origin;
 	}
 }

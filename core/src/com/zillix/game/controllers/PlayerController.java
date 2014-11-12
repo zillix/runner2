@@ -141,36 +141,36 @@ public class PlayerController extends RadialObjectController {
 	}
 	
 	public void leftPressed(int pointer) {
-		keys.get(keys.put(Keys.LEFT, true));
+		keys.put(Keys.LEFT, true);
 	}
 
 	public void rightPressed(int pointer) {
-		keys.get(keys.put(Keys.RIGHT, true));
+		keys.put(Keys.RIGHT, true);
 	}
 
 	public void jumpPressed(int pointer) {
-		keys.get(keys.put(Keys.JUMP, true));
+		keys.put(Keys.JUMP, true);
 	}
 
 	public void firePressed(int pointer) {
-		keys.get(keys.put(Keys.FIRE, true));
+		keys.put(Keys.FIRE, true);
 		fireIceBall();
 	}
 
 	public void leftReleased(int pointer) {
-		keys.get(keys.put(Keys.LEFT, false));
+		keys.put(Keys.LEFT, false);
 	}
 
 	public void rightReleased(int pointer) {
-		keys.get(keys.put(Keys.RIGHT, false));
+		keys.put(Keys.RIGHT, false);
 	}
 
 	public void jumpReleased(int pointer) {
-		keys.get(keys.put(Keys.JUMP, false));
+		keys.put(Keys.JUMP, false);
 	}
 
 	public void fireReleased(int pointer) {
-		keys.get(keys.put(Keys.FIRE, false));
+		keys.put(Keys.FIRE, false);
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package com.zillix.game.controllers;
 
 import com.zillix.game.Level;
+import com.zillix.game.objects.BasicObject;
 import com.zillix.game.objects.Platform;
 import com.zillix.game.objects.RadialObject;
 import com.zillix.util.PolarUtil;
@@ -130,7 +131,7 @@ public class RadialObjectController
 						
 						
 						// Estimate the position at the next frame
-						RadialObject next = object.getObjectAtNextFrame(deltaTime);
+						BasicObject next = object.getObjectAtNextFrame(deltaTime);
 						
 						
 						if (PolarUtil.angleAbs(object.getOriginAngle(), platform.getOriginAngle()) <= arcLength / 2
