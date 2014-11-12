@@ -13,13 +13,7 @@ public class PlayerController extends RadialObjectController {
 		LEFT, RIGHT, JUMP, FIRE
 	};
 	
-	static Map<Keys, Boolean> keys = new HashMap<Keys, Boolean>();
-	static {
-		keys.put(Keys.LEFT, false);
-		keys.put(Keys.RIGHT, false);
-		keys.put(Keys.JUMP, false);
-		keys.put(Keys.FIRE, false);
-	};
+	private Map<Keys, Boolean> keys = new HashMap<Keys, Boolean>();
 	
 	private static final long LONG_JUMP_PRESS = 150l;
 	
@@ -36,6 +30,11 @@ public class PlayerController extends RadialObjectController {
 		this.usesSurfaceCollision = true;
 		this.usesPlatformCollision = true;
 		this.allowMovement = true;
+		
+		keys.put(Keys.LEFT, false);
+		keys.put(Keys.RIGHT, false);
+		keys.put(Keys.JUMP, false);
+		keys.put(Keys.FIRE, false);
 	}
 	
 	@Override

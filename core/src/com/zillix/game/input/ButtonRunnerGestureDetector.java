@@ -81,6 +81,8 @@ public class ButtonRunnerGestureDetector extends RunnerGestureDetector {
 			default:
 				System.out.println("ButtonRunnerGestureDetector: Unsupported key " + pointers.get(pointer));
 			}
+			
+			pointers.remove(pointer);
 		}
 		else
 		{
