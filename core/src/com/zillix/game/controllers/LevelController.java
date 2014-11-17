@@ -2,6 +2,7 @@ package com.zillix.game.controllers;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.utils.PerformanceCounters;
 import com.badlogic.gdx.utils.Pool;
 import com.zillix.game.Level;
 import com.zillix.game.factories.RadialObjectControllerFactory;
@@ -35,6 +36,11 @@ public class LevelController {
 	RadialObjectSpawner<IceBallCollectable> iceBallSpawner;
 	Player player;
 	
+	private PerformanceCounters performance;
+	
+	private boolean PROFILE = false;
+	
+	
 	RadialObjectControllerFactory radialObjectControllerFactory;
 	
 	public LevelController(Level pLevel)
@@ -57,14 +63,29 @@ public class LevelController {
 		// TODO: these may not need to exist as properties
 		poolManager.addPool(platformSpawner, Platform.class);
 		poolManager.addPool(iceBallSpawner, IceBall.class);
+		
+		if (PROFILE)
+		{
+			performance = new PerformanceCounters();
+			performance.add("player");
+			performance.add("planet");
+			performance.add("objects");
+			performance.add("stats");
+		}
 				
 				
 	}
 
 	public void update(float delta)
 	{
+		// Player controller
+		if (PROFILE) performance.counters.get(0).start();
 		playerController.update(delta);
+		if (PROFILE) performance.counters.get(0).stop();
+		
+		if (PROFILE) performance.counters.get(1).start();
 		level.getPlanet().update(delta);
+		if (PROFILE) performance.counters.get(1).stop();
 		
 		if (player.getOriginDistance() > level.getPlayerStats().furthestDistance)
 		{
@@ -73,12 +94,29 @@ public class LevelController {
 			iceBallSpawner.addDebt(debt);
 		}
 		
+		if (PROFILE) performance.counters.get(2).start();
 		for (RadialObjectListController controller : radialObjectListControllers)
 		{
 			controller.update(delta);
 		}
+		if (PROFILE) performance.counters.get(2).stop();
 		
+		if (PROFILE) performance.counters.get(3).start();
 		level.getPlayerStats().update(delta);
+		if (PROFILE) performance.counters.get(3).stop();
+		
+		if (PROFILE)
+		{
+			String perf = "Controller performance: ";
+			perf += " PLAYER: " + performance.counters.get(0).time.total;
+			perf += " PLANET: " + performance.counters.get(1).time.total;
+			perf += " OBJECTS: " + performance.counters.get(2).time.total;
+			perf += " STATS: " + performance.counters.get(3).time.total;
+			
+			System.out.println(perf);
+		}
+		
+		if (PROFILE) performance.tick(delta);
 	}
 	
 	public <T> Pool<? extends RadialObject> getRadialObjectPool(Class<? extends RadialObject> classType)

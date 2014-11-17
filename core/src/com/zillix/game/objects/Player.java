@@ -60,7 +60,7 @@ public class Player extends RadialObject implements ICollector {
 	}
 	
 	@Override
-	protected String getImagePath()
+	public String getImagePath()
 	{
 		return PLAYER_IMAGE_PATH;
 	}

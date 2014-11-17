@@ -20,7 +20,7 @@ public class IceBall extends RadialObject {
 	}
 
 	@Override
-	protected String getImagePath()
+	public String getImagePath()
 	{
 		return ICEBALL_IMAGE_PATH;
 	}

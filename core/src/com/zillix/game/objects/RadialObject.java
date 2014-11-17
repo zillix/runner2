@@ -2,7 +2,6 @@ package com.zillix.game.objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pool.Poolable;
@@ -11,7 +10,6 @@ import com.zillix.game.controllers.RadialObjectController;
 public class RadialObject extends BasicObject implements Poolable {
 
 	protected Sprite sprite;
-	protected Sprite centerSprite;
 	
 	protected RadialObjectController movement;
 	
@@ -22,7 +20,6 @@ public class RadialObject extends BasicObject implements Poolable {
 	protected BasicObject nextState;
 	
 	private static final String DEFAULT_SPRITE_PATH = "objects/empty.png";
-	private static final String CENTER_SPRITE_PATH = "objects/dot.png";
 	
 	public RadialObject(RadialOriginObject pOrigin)
 	{
@@ -43,11 +40,22 @@ public class RadialObject extends BasicObject implements Poolable {
 		sprite = new Sprite();
 		position = new RadialPosition(null, 0, 0);
 		nextState = new BasicObject();
-		centerSprite = new Sprite(new Texture(CENTER_SPRITE_PATH));
-		centerSprite.setOriginCenter();
-	
-
 		reset();
+	}
+	
+	public void setTexture(Texture texture)
+	{
+		setTexture(texture, false);
+	}
+	
+	public void setTexture(Texture texture, boolean force)
+	{
+		if (sprite != null || force)
+		{
+			sprite = new Sprite(texture);
+			sprite.setOriginCenter();
+			setBounds(-sprite.getWidth() / 2, -sprite.getHeight() / 2, sprite.getWidth(), sprite.getHeight());
+		}
 	}
 	
 	@Override
@@ -65,33 +73,15 @@ public class RadialObject extends BasicObject implements Poolable {
 	public void setup(RadialOriginObject pOrigin)
 	{
 		position.setOrigin(pOrigin);
-		sprite = new Sprite(new Texture(getImagePath()));
-		sprite.setOriginCenter();
-		setBounds(-sprite.getWidth() / 2, -sprite.getHeight() / 2, sprite.getWidth(), sprite.getHeight());
 	}
 	
 	public void debugUpdate(float delta)
 	{
 	}
 	
-	protected String getImagePath()
+	public String getImagePath()
 	{
 		return DEFAULT_SPRITE_PATH;
-	}
-	
-	public void draw(SpriteBatch batch)
-	{
-		Vector2 absPos = getAbsolutePosition();
-		sprite.setPosition(absPos.x - getWidth() / 2, absPos.y - getHeight() / 2);
-		
-		//sprite.setPosition(position.x, position.y);
-		sprite.setRotation(-90 + position.originAngle);
-		//sprite.setRotation(originAngle);
-		
-		sprite.draw(batch);
-		
-		centerSprite.setPosition(absPos.x,  absPos.y);
-		centerSprite.draw(batch);
 	}
 	
 	public Vector2 getRelativePosition()
@@ -131,6 +121,14 @@ public class RadialObject extends BasicObject implements Poolable {
 
 	public void setPool(Pool<? extends RadialObject> pool) {
 		this.pool = pool;
+	}
+
+	public Sprite getSprite() {
+		return sprite;
+	}
+
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
 	}
 	
 	

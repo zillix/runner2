@@ -1,23 +1,31 @@
 package com.zillix.game.renderers;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.zillix.game.Level;
+import com.zillix.game.assets.ZAssetManager;
+import com.zillix.game.objects.Planet;
 import com.zillix.game.objects.Platform;
+import com.zillix.game.objects.Player;
 import com.zillix.game.objects.RadialObject;
 import com.zillix.game.objects.collectables.Collectable;
-import com.zillix.game.objects.collectables.IceBallCollectable;
+import com.zillix.util.PolarUtil;
 
 public class LevelRenderer implements IRenderer {
 
 	protected Level level;
-	public LevelRenderer(Level pLevel)
+	protected RadialObjectRenderer radialObjectRenderer;
+	protected ZAssetManager assets;
+	public LevelRenderer(ZAssetManager assets, Level pLevel)
 	{
 		level = pLevel;
+		this.assets = assets;
+		radialObjectRenderer = new RadialObjectRenderer(assets);
 	}
 	
 	public void render(SpriteBatch batch, OrthographicCamera camera, float delta)
@@ -46,19 +54,25 @@ public class LevelRenderer implements IRenderer {
 	
 	private void drawPlanet(SpriteBatch batch)
 	{
-		level.getPlanet().draw(batch);
+		Planet planet = level.getPlanet();
+		Sprite sprite = planet.getSprite();
+		sprite.setPosition(planet.getPosition().x - sprite.getWidth() / 2, planet.getPosition().y - sprite.getWidth() / 2);
+		sprite.draw(batch);
 	}
 	
 	private void drawPlayer(SpriteBatch batch)
 	{
-		level.getPlayer().draw(batch);
+		radialObjectRenderer.draw(level.getPlayer(), batch);
 	}
 	
 	private void drawPlatforms(SpriteBatch batch)
 	{
 		for (Platform p : level.getPlatforms())
 		{
-			p.draw(batch);
+			if (isOnScreen(p))
+			{
+				radialObjectRenderer.draw(p, batch);
+			}
 		}
 	}
 	
@@ -66,7 +80,7 @@ public class LevelRenderer implements IRenderer {
 	{
 		for (RadialObject p : level.getGameObjects())
 		{
-			p.draw(batch);
+			radialObjectRenderer.draw(p, batch);
 		}
 	}
 	
@@ -74,13 +88,42 @@ public class LevelRenderer implements IRenderer {
 	{
 		for (Collectable p : level.getCollectables())
 		{
-			p.draw(batch);
+			radialObjectRenderer.draw(p, batch);
 		}
 	}
 	
 	public float getCameraCurrentXYAngle(OrthographicCamera cam)
 	{
 	    return (float)Math.toDegrees(Math.atan2(cam.up.x, cam.up.y));
+	}
+	
+	private boolean isOnScreen(RadialObject object)
+	{
+		
+		// TODO: Do this in a mathy way
+		Player player = level.getPlayer();
+		double angleDiff = PolarUtil.angleAbs(object.getOriginAngle(), player.getOriginAngle());
+		float distDiff = Math.abs(object.getOriginDistance() - player.getOriginDistance());
+		boolean value = angleDiff <= 90
+				&& distDiff < Gdx.graphics.getWidth() / 2;
+		if (!value)
+		{
+			int a = 0;
+		}
+		System.out.println("DIFF: " + angleDiff + " " + distDiff);
+		
+		return value;
+		/*
+		Vector2 absPos = object.getAbsolutePosition();
+		if (Player.class.isInstance(object))
+		{
+			System.out.println("PLAYER ISONSCREEN: " + absPos.x + " " + absPos.y + " " + object.getWidth() + " " + object.getHeight());
+		}
+		return object.getWidth() + absPos.x > -OFFSCREEN_RENDER
+				&& object.getWidth() + absPos.x < Gdx.graphics.getWidth() + OFFSCREEN_RENDER
+				&& object.getHeight() + absPos.y > -OFFSCREEN_RENDER
+				&& object.getHeight() + absPos.y < Gdx.graphics.getHeight() + OFFSCREEN_RENDER;
+				*/
 	}
 	
 	public void dispose()

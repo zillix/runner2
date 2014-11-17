@@ -4,19 +4,16 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.input.GestureDetector.GestureAdapter;
-import com.badlogic.gdx.input.GestureDetector.GestureListener;
-import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.PerformanceCounters;
+import com.zillix.game.assets.ZAssetManager;
 import com.zillix.game.controllers.LevelController;
 import com.zillix.game.input.ButtonRunnerGestureAdapter;
 import com.zillix.game.input.ButtonRunnerGestureDetector;
 import com.zillix.game.input.RunnerGestureAdapter;
 import com.zillix.game.input.RunnerInput;
-import com.zillix.game.input.SimpleRunnerGestureDetector;
-import com.zillix.game.input.SimpleRunnerGestureAdapter;
 import com.zillix.game.renderers.HudRenderer;
 import com.zillix.game.renderers.IRenderer;
 import com.zillix.game.renderers.LevelRenderer;
@@ -35,15 +32,18 @@ public class GameScreen implements Screen {
 	
 	private PerformanceCounters performance;
 	
-	public static boolean DEBUG = false;
+	private ZAssetManager assetManager;
+	
+	private boolean PROFILE = false;
 	
 	@Override
 	public void show()
 	{
+		assetManager = new ZAssetManager();
 		level = LevelLoader.loadLevel("level1");
 		
 		ArrayList<IRenderer> renderers = new ArrayList<IRenderer>();
-		renderers.add(new LevelRenderer(level));
+		renderers.add(new LevelRenderer(assetManager, level));
 		renderers.add(new HudRenderer(level));
 		renderer = new ScreenRenderer(renderers);
 		controller = new LevelController(level);
@@ -54,7 +54,7 @@ public class GameScreen implements Screen {
 		input = new RunnerInput(controller, gestureDetector);
 		Gdx.input.setInputProcessor(input);
 		
-		if (DEBUG)
+		if (PROFILE)
 		{
 			performance = new PerformanceCounters();
 			performance.add("clear");
@@ -66,6 +66,8 @@ public class GameScreen implements Screen {
 	
 	@Override
 	public void render (float delta) {
+		assetManager.update();
+		
 		if (performance != null)
 		{
 			performance.tick();
@@ -105,7 +107,7 @@ public class GameScreen implements Screen {
 		
 		if (performance != null)
 		{
-			System.out.println("Performance: clear- " + performance.counters.get(0).time.total + " render- " + performance.counters.get(2).time.total + " controll- " + performance.counters.get(1).time.total);
+			System.out.println("Performance: clear- " + performance.counters.get(0).time.latest + " render- " + performance.counters.get(2).time.latest + " controllers- " + performance.counters.get(1).time.latest);
 		}
 	}
 	

@@ -24,7 +24,7 @@ public class IceBallCollectable extends Collectable {
 	}
 	
 	@Override
-	protected String getImagePath()
+	public String getImagePath()
 	{
 		return ICEBALL_IMAGE_PATH;
 	}

@@ -12,7 +12,7 @@ public class Platform extends RadialObject {
 	public Platform() {}
 	
 	@Override
-	protected String getImagePath()
+	public String getImagePath()
 	{
 		return PLATFORM_IMAGE_PATH;
 	}

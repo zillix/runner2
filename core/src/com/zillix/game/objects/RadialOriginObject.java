@@ -22,12 +22,6 @@ public class RadialOriginObject {
 	{	
 	}
 	
-	public void draw(SpriteBatch batch)
-	{
-		sprite.setPosition(position.x - sprite.getWidth() / 2, position.y - sprite.getWidth() / 2);
-		sprite.draw(batch);
-	}
-	
 	public void rotate(float rotateAngle)
 	{}
 	
