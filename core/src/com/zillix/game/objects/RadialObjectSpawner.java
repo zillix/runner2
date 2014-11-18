@@ -111,4 +111,12 @@ public class RadialObjectSpawner<T extends RadialObject> extends RadialObjectPoo
 	{
 		return outputList;
 	}
+
+	public Class<T> getClassType() {
+		return ClassType;
+	}
+
+	public void setClassType(Class<T> classType) {
+		ClassType = classType;
+	}
 }

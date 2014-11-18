@@ -11,6 +11,7 @@ import com.zillix.game.objects.Platform;
 import com.zillix.game.objects.Player;
 import com.zillix.game.objects.RadialObject;
 import com.zillix.game.objects.RadialObjectSpawner;
+import com.zillix.game.objects.collectables.CoinCollectable;
 import com.zillix.game.objects.collectables.IceBallCollectable;
 import com.zillix.game.pools.RadialObjectPoolManager;
 
@@ -27,13 +28,18 @@ public class LevelController {
 	private static final int ICEBALL_MAX_SPAWN_DISTANCE = 200;
 	private static final int DISTANCE_PER_ICEBALL = 30;
 	
+	private static final int INITIAL_COIN_QUANTITY = 0;
+	private static final int COIN_MIN_SPAWN_DISTANCE = 100;
+	private static final int COIN_MAX_SPAWN_DISTANCE = 200;
+	private static final int DISTANCE_PER_COIN = 30;
+	
 	Level level;
 	PlayerController playerController;
 	ArrayList<RadialObjectListController> radialObjectListControllers;
 	RadialObjectPoolManager poolManager;
 	
-	RadialObjectSpawner<Platform> platformSpawner;
-	RadialObjectSpawner<IceBallCollectable> iceBallSpawner;
+	ArrayList<RadialObjectSpawner<? extends RadialObject>> spawners;
+	
 	Player player;
 	
 	private PerformanceCounters performance;
@@ -57,12 +63,19 @@ public class LevelController {
 		radialObjectListControllers.add(new CollectableListController(level.getCollectables(), radialObjectControllerFactory, poolManager, level.getPlanet(), player));
 		radialObjectListControllers.add(new RadialObjectListController(level.getGameObjects(), radialObjectControllerFactory, poolManager, level.getPlanet()));
 		
-		platformSpawner = new RadialObjectSpawner<Platform>(Platform.class, level.getPlatforms(), player, level.getPlanet(), INITIAL_PLATFORM_QUANTITY, PLATFORM_MIN_SPAWN_DISTANCE, PLATFORM_MAX_SPAWN_DISTANCE, DISTANCE_PER_PLATFORM);
-		iceBallSpawner = new RadialObjectSpawner<IceBallCollectable>(IceBallCollectable.class, level.getCollectables(), player, level.getPlanet(), INITIAL_ICEBALL_QUANTITY, ICEBALL_MIN_SPAWN_DISTANCE, ICEBALL_MAX_SPAWN_DISTANCE, DISTANCE_PER_ICEBALL);
-	
-		// TODO: these may not need to exist as properties
-		poolManager.addPool(platformSpawner, Platform.class);
-		poolManager.addPool(iceBallSpawner, IceBall.class);
+		spawners = new ArrayList<RadialObjectSpawner<? extends RadialObject>>();
+		// Platforms
+		spawners.add(new RadialObjectSpawner<Platform>(Platform.class, level.getPlatforms(), player, level.getPlanet(), INITIAL_PLATFORM_QUANTITY, PLATFORM_MIN_SPAWN_DISTANCE, PLATFORM_MAX_SPAWN_DISTANCE, DISTANCE_PER_PLATFORM));
+		// Ice Balls
+		spawners.add(new RadialObjectSpawner<IceBallCollectable>(IceBallCollectable.class, level.getCollectables(), player, level.getPlanet(), INITIAL_ICEBALL_QUANTITY, ICEBALL_MIN_SPAWN_DISTANCE, ICEBALL_MAX_SPAWN_DISTANCE, DISTANCE_PER_ICEBALL));
+		// Coins
+		spawners.add(new RadialObjectSpawner<CoinCollectable>(CoinCollectable.class, level.getCollectables(), player, level.getPlanet(), INITIAL_COIN_QUANTITY, COIN_MIN_SPAWN_DISTANCE, COIN_MAX_SPAWN_DISTANCE, DISTANCE_PER_COIN));
+		
+		
+		for (RadialObjectSpawner<? extends RadialObject> spawner : spawners)
+		{
+			poolManager.addPool(spawner, spawner.getClassType());
+		}
 		
 		if (PROFILE)
 		{
@@ -90,8 +103,10 @@ public class LevelController {
 		if (player.getOriginDistance() > level.getPlayerStats().furthestDistance)
 		{
 			double debt = player.getOriginDistance() - level.getPlayerStats().furthestDistance;
-			platformSpawner.addDebt(debt);
-			iceBallSpawner.addDebt(debt);
+			for (RadialObjectSpawner<? extends RadialObject> spawner : spawners)
+			{
+				spawner.addDebt(debt);
+			}
 		}
 		
 		if (PROFILE) performance.counters.get(2).start();

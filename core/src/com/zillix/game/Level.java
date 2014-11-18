@@ -7,7 +7,6 @@ import com.zillix.game.objects.Platform;
 import com.zillix.game.objects.Player;
 import com.zillix.game.objects.RadialObject;
 import com.zillix.game.objects.collectables.Collectable;
-import com.zillix.game.objects.collectables.IceBallCollectable;
 import com.zillix.stats.PlayerStats;
 
 
