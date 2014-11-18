@@ -104,14 +104,13 @@ public class LevelRenderer implements IRenderer {
 		Player player = level.getPlayer();
 		double angleDiff = PolarUtil.angleAbs(object.getOriginAngle(), player.getOriginAngle());
 		float distDiff = Math.abs(object.getOriginDistance() - player.getOriginDistance());
-		boolean value = angleDiff <= 90
+		boolean value = angleDiff <= 120
 				&& distDiff < Gdx.graphics.getWidth() / 2;
 		if (!value)
 		{
 			int a = 0;
 		}
-		System.out.println("DIFF: " + angleDiff + " " + distDiff);
-		
+	
 		return value;
 		/*
 		Vector2 absPos = object.getAbsolutePosition();
