@@ -7,8 +7,10 @@ Runner game
 TODO:
 
 Features:
+- [x] Platforms
+- [x] Ice balls
 - [ ] Planet gap
-- [ ] Coins
+- [x] Coins
 - [ ] Ship
 - [ ] Basic UI
 - [ ] Touch UI
