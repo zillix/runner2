@@ -47,5 +47,9 @@ public class ScreenRenderer {
 	public void resize(int width, int height)
 	{
 		viewport.update(width, height);
+		for (IRenderer renderer : renderers)
+		{
+			renderer.resize(width,  height);
+		}
 	}
 }
