@@ -6,10 +6,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zillix.game.Level;
 import com.zillix.game.objects.Player;
 import com.zillix.game.objects.collectables.Collectable.CollectableType;
@@ -27,7 +33,12 @@ public class HudRenderer implements IRenderer {
 	private Label coinLabel;
 	private Label fpsLabel;
 	
-	public HudRenderer(Level level)
+	private TextButtonStyle buttonStyle;
+	private TextButton shopButton;
+	
+	
+	
+	public HudRenderer(Level level, Viewport viewport, SpriteBatch batch)
 	{
 		this.level = level;
 		font = new BitmapFont();
@@ -35,7 +46,7 @@ public class HudRenderer implements IRenderer {
 		
 		player = level.getPlayer();
 		
-		stage = new Stage();
+		stage = new Stage(viewport, batch);
 		table = new Table();
 		table.setFillParent(true);
 		stage.addActor(table);
@@ -62,6 +73,20 @@ public class HudRenderer implements IRenderer {
 		
 		fpsLabel = initLabel("FPS", textStyle, 20, Gdx.graphics.getHeight() - 60);
 		stage.addActor(fpsLabel);
+		
+		buttonStyle = new TextButtonStyle();
+		buttonStyle.font = font;
+		// buttonStyle.up = skin.getDrawable("up-button");
+		shopButton = new TextButton("button", buttonStyle);
+		shopButton.setX(Gdx.graphics.getWidth() / 2);
+		shopButton.setY(Gdx.graphics.getHeight() - 20);
+		shopButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				System.out.println("Button pressed");
+			}
+		});
+		stage.addActor(shopButton);
 	}
 	
 	private Label initLabel(String text, LabelStyle style, int X, int Y)
@@ -94,6 +119,11 @@ public class HudRenderer implements IRenderer {
 					Gdx.graphics.getHeight() - 60);
 					*/
 		//batch.end();
+	}
+	
+	public Stage getUIStage()
+	{
+		return stage;
 	}
 	
 	private void updateText()
