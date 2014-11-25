@@ -3,8 +3,8 @@ package com.zillix.game;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.utils.PerformanceCounters;
@@ -24,7 +24,8 @@ public class GameScreen implements Screen {
 	private LevelController controller;
 	private Level level;
 	
-	private RunnerInput input;
+	private InputMultiplexer inputMultiplexer;
+	private RunnerInput gameInput;
 	private RunnerGestureAdapter runnerGesture;
 	private GestureDetector gestureDetector;
 	
@@ -43,16 +44,22 @@ public class GameScreen implements Screen {
 		level = LevelLoader.loadLevel("level1");
 		
 		ArrayList<IRenderer> renderers = new ArrayList<IRenderer>();
-		renderers.add(new LevelRenderer(assetManager, level));
-		renderers.add(new HudRenderer(level));
 		renderer = new ScreenRenderer(renderers);
+		renderers.add(new LevelRenderer(assetManager, level));
+		HudRenderer hudRenderer = new HudRenderer(level, renderer.getViewport(), renderer.getBatch());
+		renderers.add(hudRenderer);
+		
 		controller = new LevelController(level);
 		
 		runnerGesture = new ButtonRunnerGestureAdapter(controller);
 		gestureDetector = new ButtonRunnerGestureDetector(controller, runnerGesture);
 		
-		input = new RunnerInput(controller, gestureDetector);
-		Gdx.input.setInputProcessor(input);
+		inputMultiplexer = new InputMultiplexer();
+		
+		gameInput = new RunnerInput(controller, gestureDetector);
+		inputMultiplexer.addProcessor(hudRenderer.getUIStage());
+		inputMultiplexer.addProcessor(gameInput);
+		Gdx.input.setInputProcessor(inputMultiplexer);
 		
 		if (PROFILE)
 		{
