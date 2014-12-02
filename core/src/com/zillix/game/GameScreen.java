@@ -46,7 +46,7 @@ public class GameScreen implements Screen {
 		ArrayList<IRenderer> renderers = new ArrayList<IRenderer>();
 		renderer = new ScreenRenderer(renderers);
 		renderers.add(new LevelRenderer(assetManager, level));
-		HudRenderer hudRenderer = new HudRenderer(level, renderer.getViewport(), renderer.getBatch());
+		HudRenderer hudRenderer = new HudRenderer(level, renderer.getViewport(), renderer.getBatch(), assetManager);
 		renderers.add(hudRenderer);
 		
 		controller = new LevelController(level);
