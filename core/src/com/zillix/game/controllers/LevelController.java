@@ -46,6 +46,8 @@ public class LevelController {
 	
 	private boolean PROFILE = false;
 	
+	private boolean isPaused = false;
+	
 	
 	RadialObjectControllerFactory radialObjectControllerFactory;
 	
@@ -88,50 +90,58 @@ public class LevelController {
 				
 				
 	}
+	
+	public void togglePause(boolean isPaused)
+	{
+		this.isPaused = isPaused;
+	}
 
 	public void update(float delta)
 	{
-		// Player controller
-		if (PROFILE) performance.counters.get(0).start();
-		playerController.update(delta);
-		if (PROFILE) performance.counters.get(0).stop();
-		
-		if (PROFILE) performance.counters.get(1).start();
-		level.getPlanet().update(delta);
-		if (PROFILE) performance.counters.get(1).stop();
-		
-		if (player.getOriginDistance() > level.getPlayerStats().furthestDistance)
+		if (!isPaused)
 		{
-			double debt = player.getOriginDistance() - level.getPlayerStats().furthestDistance;
-			for (RadialObjectSpawner<? extends RadialObject> spawner : spawners)
-			{
-				spawner.addDebt(debt);
-			}
-		}
-		
-		if (PROFILE) performance.counters.get(2).start();
-		for (RadialObjectListController controller : radialObjectListControllers)
-		{
-			controller.update(delta);
-		}
-		if (PROFILE) performance.counters.get(2).stop();
-		
-		if (PROFILE) performance.counters.get(3).start();
-		level.getPlayerStats().update(delta);
-		if (PROFILE) performance.counters.get(3).stop();
-		
-		if (PROFILE)
-		{
-			String perf = "Controller performance: ";
-			perf += " PLAYER: " + performance.counters.get(0).time.total;
-			perf += " PLANET: " + performance.counters.get(1).time.total;
-			perf += " OBJECTS: " + performance.counters.get(2).time.total;
-			perf += " STATS: " + performance.counters.get(3).time.total;
+			// Player controller
+			if (PROFILE) performance.counters.get(0).start();
+			playerController.update(delta);
+			if (PROFILE) performance.counters.get(0).stop();
 			
-			System.out.println(perf);
+			if (PROFILE) performance.counters.get(1).start();
+			level.getPlanet().update(delta);
+			if (PROFILE) performance.counters.get(1).stop();
+			
+			if (player.getOriginDistance() > level.getPlayerStats().furthestDistance)
+			{
+				double debt = player.getOriginDistance() - level.getPlayerStats().furthestDistance;
+				for (RadialObjectSpawner<? extends RadialObject> spawner : spawners)
+				{
+					spawner.addDebt(debt);
+				}
+			}
+			
+			if (PROFILE) performance.counters.get(2).start();
+			for (RadialObjectListController controller : radialObjectListControllers)
+			{
+				controller.update(delta);
+			}
+			if (PROFILE) performance.counters.get(2).stop();
+			
+			if (PROFILE) performance.counters.get(3).start();
+			level.getPlayerStats().update(delta);
+			if (PROFILE) performance.counters.get(3).stop();
+			
+			if (PROFILE)
+			{
+				String perf = "Controller performance: ";
+				perf += " PLAYER: " + performance.counters.get(0).time.total;
+				perf += " PLANET: " + performance.counters.get(1).time.total;
+				perf += " OBJECTS: " + performance.counters.get(2).time.total;
+				perf += " STATS: " + performance.counters.get(3).time.total;
+				
+				System.out.println(perf);
+			}
+			
+			if (PROFILE) performance.tick(delta);
 		}
-		
-		if (PROFILE) performance.tick(delta);
 	}
 	
 	public <T> Pool<? extends RadialObject> getRadialObjectPool(Class<? extends RadialObject> classType)

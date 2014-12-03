@@ -31,13 +31,15 @@ public class ZAssetManager extends AssetManager {
 		requestedAssets.remove(fileName);
 	}
 	
-	public synchronized <T> void forceLoad (String fileName, Class<T> type) {
+	public synchronized <T> T forceLoad (String fileName, Class<T> type) {
 		load(fileName, type);
 		finishLoading();
+		return get(fileName, type);
 	}
 	
-	public synchronized <T> void forceLoad (String fileName, Class<T> type, AssetLoaderParameters<T> parameter) {
+	public synchronized <T> T forceLoad (String fileName, Class<T> type, AssetLoaderParameters<T> parameter) {
 		load(fileName, type, parameter);
 		finishLoading();
+		return get(fileName, type);
 	}
 }
