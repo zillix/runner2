@@ -86,6 +86,7 @@ public class HudRenderer implements IRenderer {
 		model.update(player);
 		
 		stage.draw();
+		stage.act(delta);
 	}
 	
 	public Stage getUIStage()

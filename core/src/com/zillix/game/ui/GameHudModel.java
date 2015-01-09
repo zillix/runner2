@@ -8,8 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.zillix.game.Level;
 import com.zillix.game.assets.ZAssetManager;
 import com.zillix.game.controllers.HudController;
+import com.zillix.game.controllers.LevelController;
 import com.zillix.game.objects.Player;
 import com.zillix.game.objects.collectables.Collectable.CollectableType;
 import com.zillix.game.renderers.HudRenderer;
@@ -19,13 +21,16 @@ public class GameHudModel extends HudModel {
 	private Label coinLabel;
 	private Label fpsLabel;
 	
+	private LevelController levelController;
+	
 
 	private TextButton shopButton;
 	
 	private ShopMenu shopMenu;
 	
-	public GameHudModel()
+	public GameHudModel(LevelController levelController)
 	{
+		this.levelController = levelController;
 	}
 	
 	@Override
@@ -40,7 +45,12 @@ public class GameHudModel extends HudModel {
 		textStyle = new LabelStyle();
 		textStyle.font = font;
 		
-		shopMenu = new ShopMenu(200, 120, font, assetManager, controller);
+		shopMenu = new ShopMenu(600, 480, font, assetManager, controller) {
+			public void onClose()
+			{
+				levelController.togglePause(false);
+			}
+		};
 		
 		
 		coinLabel = renderer.initLabel("Coins", textStyle, 20, Gdx.graphics.getHeight() - 20);
@@ -65,6 +75,7 @@ public class GameHudModel extends HudModel {
 	        
 	        public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
 	               controller.open(shopMenu);
+	               levelController.togglePause(true);
 	        }
 	    });
 		

@@ -32,8 +32,8 @@ public class BasicButton extends TextButton {
 	{
 		setWidth(width);
 		setHeight(height);
-		setX(x);
-		setY(y);
+		setX(x - width / 2);
+		setY(y - height / 2);
 	}
 	
 	protected static TextButtonStyle initializeButtonStyle(String imagePath, String upDrawable, String downDrawable, BitmapFont font, ZAssetManager assetManager)

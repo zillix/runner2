@@ -22,7 +22,7 @@ public class ShopMenu extends UIPopup {
 	{
 		super.initialize(width, height, font, assetManager, controller, backgroundImage);
 		
-		closeButton = new BasicButton("close",20, 20, font, assetManager);
+		closeButton = new BasicButton("close", width / 2 - 80, height / 2 - 60, font, assetManager);
 		this.addActor(closeButton);
 		closeButton.addListener(new ChangeListener() {
 			

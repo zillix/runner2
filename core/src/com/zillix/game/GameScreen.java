@@ -48,9 +48,9 @@ public class GameScreen implements Screen {
 	{
 		assetManager = new ZAssetManager();
 		level = LevelLoader.loadLevel("level1");
+		controller = new LevelController(level);
 		
-		
-		gameHud = new GameHudModel();
+		gameHud = new GameHudModel(controller);
 		hudController = new HudController(gameHud);
 		
 		ArrayList<IRenderer> renderers = new ArrayList<IRenderer>();
@@ -60,8 +60,6 @@ public class GameScreen implements Screen {
 		renderers.add(hudRenderer);
 		
 		gameHud.setup(hudController, hudRenderer, assetManager);
-		
-		controller = new LevelController(level);
 		
 		runnerGesture = new ButtonRunnerGestureAdapter(controller);
 		gestureDetector = new ButtonRunnerGestureDetector(controller, runnerGesture);
