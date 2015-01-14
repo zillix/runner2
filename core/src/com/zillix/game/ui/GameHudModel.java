@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 import com.zillix.game.Level;
 import com.zillix.game.assets.ZAssetManager;
 import com.zillix.game.controllers.HudController;
@@ -15,6 +16,7 @@ import com.zillix.game.controllers.LevelController;
 import com.zillix.game.objects.Player;
 import com.zillix.game.objects.collectables.Collectable.CollectableType;
 import com.zillix.game.renderers.HudRenderer;
+import com.zillix.util.UIUtil;
 
 public class GameHudModel extends HudModel {
 	private Label iceBallLabel;
@@ -40,9 +42,7 @@ public class GameHudModel extends HudModel {
 		
 		BitmapFont font = renderer.getFont();
 		
-		LabelStyle textStyle;
-		
-		textStyle = new LabelStyle();
+		LabelStyle textStyle = new LabelStyle();
 		textStyle.font = font;
 		
 		shopMenu = new ShopMenu(600, 480, font, assetManager, controller) {
@@ -53,13 +53,13 @@ public class GameHudModel extends HudModel {
 		};
 		
 		
-		coinLabel = renderer.initLabel("Coins", textStyle, 20, Gdx.graphics.getHeight() - 20);
+		coinLabel = UIUtil.initLabel("Coins", textStyle, 20, Gdx.graphics.getHeight() - 20);
 		stage.addActor(coinLabel);
 		
-		iceBallLabel = renderer.initLabel("Ice Balls", textStyle, 20, Gdx.graphics.getHeight() - 40);
+		iceBallLabel = UIUtil.initLabel("Ice Balls", textStyle, 20, Gdx.graphics.getHeight() - 40);
 		stage.addActor(iceBallLabel);
 		
-		fpsLabel = renderer.initLabel("FPS", textStyle, 20, Gdx.graphics.getHeight() - 60);
+		fpsLabel = UIUtil.initLabel("FPS", textStyle, 20, Gdx.graphics.getHeight() - 60);
 		stage.addActor(fpsLabel);
 		
 		shopButton = new ShopButton((int)(Gdx.graphics.getWidth() / 2),

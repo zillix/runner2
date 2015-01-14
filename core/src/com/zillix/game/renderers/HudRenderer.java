@@ -71,16 +71,6 @@ public class HudRenderer implements IRenderer {
 		textStyle.font = font;
 	}
 	
-	public Label initLabel(String text, LabelStyle style, int X, int Y)
-	{
-		Label label = new Label(text, style);
-		label.setBounds(0, .2f, Gdx.graphics.getWidth(), 2);
-		label.setFontScale(1f, 1f);
-		label.setPosition(X,  Y);
-		
-		return label;
-	}
-	
 	public void render(SpriteBatch batch, OrthographicCamera camera, float delta)
 	{
 		model.update(player);
