@@ -13,6 +13,7 @@ import com.zillix.game.Level;
 import com.zillix.game.assets.ZAssetManager;
 import com.zillix.game.controllers.HudController;
 import com.zillix.game.controllers.LevelController;
+import com.zillix.game.gamedata.DataManager;
 import com.zillix.game.objects.Player;
 import com.zillix.game.objects.collectables.Collectable.CollectableType;
 import com.zillix.game.renderers.HudRenderer;
@@ -36,16 +37,16 @@ public class GameHudModel extends HudModel {
 	}
 	
 	@Override
-	public void setup(final HudController controller, HudRenderer renderer, ZAssetManager assetManager)
+	public void setup(final HudController controller, HudRenderer renderer, ZAssetManager assetManager, DataManager dataManager)
 	{
-		super.setup(controller, renderer, assetManager);
+		super.setup(controller, renderer, assetManager, dataManager);
 		
 		BitmapFont font = renderer.getFont();
 		
 		LabelStyle textStyle = new LabelStyle();
 		textStyle.font = font;
 		
-		shopMenu = new ShopMenu(600, 480, font, assetManager, controller) {
+		shopMenu = new ShopMenu(600, 480, font, assetManager, controller, dataManager) {
 			public void onClose()
 			{
 				levelController.togglePause(false);

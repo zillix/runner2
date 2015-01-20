@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.zillix.game.assets.ZAssetManager;
 import com.zillix.game.controllers.HudController;
+import com.zillix.game.gamedata.DataManager;
 import com.zillix.game.interfaces.ICloseable;
 import com.zillix.game.ui.UIPopup.VerticalAlignment;
 
@@ -40,17 +41,17 @@ public class UIPopup extends Group implements ICloseable {
 		RIGHT
 	}
 	
-	public UIPopup(int width, int height, BitmapFont font, ZAssetManager assetManager, HudController controller)
+	public UIPopup(int width, int height, BitmapFont font, ZAssetManager assetManager, HudController controller, DataManager dataManager)
 	{
-		initialize(width, height, font, assetManager, controller, DEFAULT_MENU_BACKGROUND_PATH);
+		initialize(width, height, font, assetManager, controller, dataManager, DEFAULT_MENU_BACKGROUND_PATH);
 	}
 	
-	public UIPopup(int width, int height, BitmapFont font, ZAssetManager assetManager, HudController controller, String backgroundImage)
+	public UIPopup(int width, int height, BitmapFont font, ZAssetManager assetManager, HudController controller, DataManager dataManager, String backgroundImage)
 	{
-		initialize(width, height, font, assetManager, controller, backgroundImage);
+		initialize(width, height, font, assetManager, controller, dataManager, backgroundImage);
 	}
 	
-	protected void initialize(int width, int height, BitmapFont font, ZAssetManager assetManager, HudController controller, String backgroundImage)
+	protected void initialize(int width, int height, BitmapFont font, ZAssetManager assetManager, HudController controller, DataManager dataManager, String backgroundImage)
 	{
 		TextureAtlas atlas = assetManager.forceLoad(backgroundImage, TextureAtlas.class);
 		NinePatch patch = atlas.createPatch("box1");

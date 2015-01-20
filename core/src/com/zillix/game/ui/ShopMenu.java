@@ -8,6 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.zillix.game.assets.ZAssetManager;
 import com.zillix.game.controllers.HudController;
+import com.zillix.game.gamedata.DataManager;
+import com.zillix.game.gamedata.StatData;
+import com.zillix.game.gamedata.StatData.GameStatEnum;
 
 public class ShopMenu extends UIPopup {
 	
@@ -15,15 +18,15 @@ public class ShopMenu extends UIPopup {
 	
 	private BasicTextButton closeButton;
 	
-	public ShopMenu(int width, int height, BitmapFont font, ZAssetManager assetManager, HudController controller)
+	public ShopMenu(int width, int height, BitmapFont font, ZAssetManager assetManager, HudController controller, DataManager dataManager)
 	{
-		super(width, height, font, assetManager, controller, MENU_BACKGROUND_PATH);
+		super(width, height, font, assetManager, controller, dataManager, MENU_BACKGROUND_PATH);
 	}
 	
 	@Override
-	protected void initialize(int width, int height, BitmapFont font, ZAssetManager assetManager, HudController controller, String backgroundImage)
+	protected void initialize(int width, int height, BitmapFont font, ZAssetManager assetManager, HudController controller, DataManager dataManager, String backgroundImage)
 	{
-		super.initialize(width, height, font, assetManager, controller, backgroundImage);
+		super.initialize(width, height, font, assetManager, controller, dataManager, backgroundImage);
 		
 		closeButton = new BasicTextButton("close", width / 2 - 80, height / 2 - 60, font, assetManager);
 		this.addActor(closeButton);
@@ -45,13 +48,13 @@ public class ShopMenu extends UIPopup {
 			}
 		};
 		
-		
+		StatData statData = dataManager.statData();
 		ShopElement element;
-		element = new ShopElement("Speed", 10, -100, textStyle, assetManager, onButtonPressed);
+		element = new ShopElement(statData.getStatDataElement(GameStatEnum.RUN_SPEED), 10, -100, textStyle, assetManager, onButtonPressed);
 		addActor(element);
-		element = new ShopElement("Jump", 10, 0, textStyle, assetManager, onButtonPressed);
+		element = new ShopElement(statData.getStatDataElement(GameStatEnum.JUMP_POWER), 10, 0, textStyle, assetManager, onButtonPressed);
 		addActor(element);
-		element = new ShopElement("DblJump", 10, 110, textStyle, assetManager, onButtonPressed);
+		element = new ShopElement(statData.getStatDataElement(GameStatEnum.DOUBLE_JUMP_PERCENT), 10, 110, textStyle, assetManager, onButtonPressed);
 		addActor(element);
 	}
 }

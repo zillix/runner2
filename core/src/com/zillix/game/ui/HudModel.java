@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.zillix.game.assets.ZAssetManager;
 import com.zillix.game.controllers.HudController;
+import com.zillix.game.gamedata.DataManager;
 import com.zillix.game.objects.Player;
 import com.zillix.game.renderers.HudRenderer;
 
@@ -45,7 +46,7 @@ public class HudModel {
 		}
 	}
 	
-	public void setup(final HudController controller, HudRenderer renderer, ZAssetManager assetManager)
+	public void setup(final HudController controller, HudRenderer renderer, ZAssetManager assetManager, DataManager dataManager)
 	{
 		stage = renderer.getUIStage();
 	}

@@ -28,6 +28,15 @@ public class Player extends RadialObject implements ICollector {
 		public static final int DOUBLE_JUMPING = 3;
 	}
 	
+	public static class PlayerStat
+	{
+		public static final int RUN_SPEED = 0;
+		public static final int JUMP_POWER = 1;
+		public static final int DOUBLE_JUMP_POWER = 2;
+		public static final int MAX_HStatP = 3;
+		public static final int HP_REGEN = 4;
+	}
+	
 	public Player(RadialOriginObject pOrigin, float pRadius, float pAngle)
 	{
 		super(pOrigin);
@@ -45,7 +54,7 @@ public class Player extends RadialObject implements ICollector {
 		}
 		
 		// Temp code for configuring movement
-		maxVelocity.set(10 * 30, 50 * 30);
+		maxVelocity.set(12 * 30, 50 * 30);
 		acceleration.set(0f, 1.5f * 50 * 30); // should use planet.gravity
 		deceleration.set(1.3f * 30 * 30, 0f);
 		runAcceleration = 2 * 30 * 30;

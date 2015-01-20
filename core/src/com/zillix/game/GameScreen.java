@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.PerformanceCounters;
 import com.zillix.game.assets.ZAssetManager;
 import com.zillix.game.controllers.HudController;
 import com.zillix.game.controllers.LevelController;
+import com.zillix.game.gamedata.DataManager;
 import com.zillix.game.input.ButtonRunnerGestureAdapter;
 import com.zillix.game.input.ButtonRunnerGestureDetector;
 import com.zillix.game.input.RunnerGestureAdapter;
@@ -41,11 +42,15 @@ public class GameScreen implements Screen {
 	
 	private ZAssetManager assetManager;
 	
+	private DataManager dataManager;
+	
 	private boolean PROFILE = false;
 	
 	@Override
 	public void show()
 	{
+		dataManager = new DataManager();
+		
 		assetManager = new ZAssetManager();
 		level = LevelLoader.loadLevel("level1");
 		controller = new LevelController(level);
@@ -59,7 +64,7 @@ public class GameScreen implements Screen {
 		HudRenderer hudRenderer = new HudRenderer(level, renderer.getViewport(), renderer.getBatch(), assetManager, hudController, gameHud);
 		renderers.add(hudRenderer);
 		
-		gameHud.setup(hudController, hudRenderer, assetManager);
+		gameHud.setup(hudController, hudRenderer, assetManager, dataManager);
 		
 		runnerGesture = new ButtonRunnerGestureAdapter(controller);
 		gestureDetector = new ButtonRunnerGestureDetector(controller, runnerGesture);
